@@ -56,9 +56,9 @@
 
             var main     = $('<div></div>').addClass('floating-main').text('+').css(main_css);
 
-            var sub_top  = $('<div></div>').addClass('floating-sub-top').css(sub_css);
-            var sub_home = $('<div></div>').addClass('floating-sub-home').css(sub_css);
-            var sub_back = $('<div></div>').addClass('floating-sub-back').css(sub_css);
+            var sub_top  = $('<div></div>').addClass('floating-sub floating-sub-top').css(sub_css);
+            var sub_home = $('<div></div>').addClass('floating-sub floating-sub-home').css(sub_css);
+            var sub_back = $('<div></div>').addClass('floating-sub floating-sub-back').css(sub_css);
 
             main.appendTo(this.$element).after(sub_top).after(sub_back).after(sub_home);
 
@@ -67,20 +67,51 @@
 
             var _duration = this.options.duration;
 
-            parent.on('mouseenter', function(){
-                sub_top.animate({bottom: '+='+_d+'px'}, _duration);
-                sub_back.animate({right: '+='+_d+'px'}, _duration);
-                sub_home.animate({
-                    right: '+='+ __d+'px',
-                    bottom: '+='+ __d+'px'
-                }, _duration);
-            }).on('mouseleave', function(){
-                sub_top.animate({bottom: '-='+_d+'px'}, _duration);
-                sub_back.animate({right: '-='+_d+'px'}, _duration);
-                sub_home.animate({
-                    right: '-='+ __d+'px',
-                    bottom: '-='+ __d+'px'
-                }, _duration);
+            // parent.on('click', function(){
+            //     sub_top.animate({bottom: '+='+_d+'px'}, _duration);
+            //     sub_back.animate({right: '+='+_d+'px'}, _duration);
+            //     sub_home.animate({
+            //         right: '+='+ __d+'px',
+            //         bottom: '+='+ __d+'px'
+            //     }, _duration);
+            // });
+
+            main.click(function(){
+                if ($(this).hasClass('spreaded')) {
+                    $(this).removeClass('spreaded');
+                    $(this).css({
+                        'transform': 'rotate(0)',
+                        '-ms-transform': 'rotate(0)',
+                        '-moz-transform': 'rotate(0)',
+                        '-webkit-transform': 'rotate(0)',
+                        '-o-transform': 'rotate(0)',
+                    });
+                    sub_top.animate({bottom: '-='+_d+'px'}, _duration);
+                    sub_back.animate({right: '-='+_d+'px'}, _duration);
+                    sub_home.animate({
+                        right: '-='+ __d+'px',
+                        bottom: '-='+ __d+'px'
+                    }, _duration);
+                } else {
+                    $(this).addClass('spreaded');
+                    $(this).css({
+                        'transform': 'rotate(45deg)',
+                        '-ms-transform': 'rotate(45deg)',
+                        '-moz-transform': 'rotate(45deg)',
+                        '-webkit-transform': 'rotate(45deg)',
+                        '-o-transform': 'rotate(45deg)',
+                    });
+                    sub_top.animate({bottom: '+='+_d+'px'}, _duration);
+                    sub_back.animate({right: '+='+_d+'px'}, _duration);
+                    sub_home.animate({
+                        right: '+='+ __d+'px',
+                        bottom: '+='+ __d+'px'
+                    }, _duration);
+                }
+            });
+
+            main.blur(function() {
+
             });
         }
     };
