@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "animate.css": "^3.5.2",
+    "jquery": "^3.2.0"
+  },
+  "name": "floating",
+  "version": "0.0.9",
+  "description": "floating buttons for jquery",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "floating",
+    "buttons"
+  ],
+  "author": "messikiller",
+  "license": "ISC"
+}
