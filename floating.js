@@ -22,30 +22,35 @@
             var parent = this.$element;
 
             var parent_css = {
+                'display': 'inline-block',
                 'position': 'fixed',
                 'bottom': this.options.bottom,
                 'right': this.options.right,
             };
 
             var main_css = {
+                'display': 'inline-block',
                 'background-color': this.options.background_color,
                 'width': this.options.width,
                 'height': this.options.height,
                 'border-radius': this.options.width / 2,
+                'border': '1px solid '+this.options.background_color,
                 'color': '#ffffff',
                 'line-height': this.options.height + 'px',
                 'text-align': 'center',
                 'font-size': parseInt(0.75 * this.options.height),
                 'cursor': 'pointer',
-                'z-index': 99999,
+                'z-index': 99999
             };
 
             var sub_css = {
+                'display': 'inline-block',
                 'color': '#ffffff',
                 'position': 'absolute',
                 'right': 0,
                 'bottom': 0,
                 'background-color': this.options.sub_background_color,
+                'border': '1px solid '+this.options.background_color,
                 'width': this.options.width,
                 'height': this.options.height,
                 'border-radius': this.options.width / 2,
@@ -54,11 +59,10 @@
 
             parent.css(parent_css);
 
-            var main     = $('<div></div>').addClass('floating-main').text('+').css(main_css);
-
-            var sub_top  = $('<div></div>').addClass('floating-sub floating-sub-top').css(sub_css);
-            var sub_home = $('<div></div>').addClass('floating-sub floating-sub-home').css(sub_css);
-            var sub_back = $('<div></div>').addClass('floating-sub floating-sub-back').css(sub_css);
+            var main     = $('<a></a>').addClass('floating-main').html('+').css(main_css);
+            var sub_top  = $('<a></a>').addClass('floating-sub floating-sub-top').css(sub_css);
+            var sub_home = $('<a></a>').addClass('floating-sub floating-sub-home').css(sub_css);
+            var sub_back = $('<a></a>').addClass('floating-sub floating-sub-back').css(sub_css);
 
             main.appendTo(this.$element).after(sub_top).after(sub_back).after(sub_home);
 
@@ -67,51 +71,51 @@
 
             var _duration = this.options.duration;
 
-            // parent.on('click', function(){
-            //     sub_top.animate({bottom: '+='+_d+'px'}, _duration);
-            //     sub_back.animate({right: '+='+_d+'px'}, _duration);
-            //     sub_home.animate({
-            //         right: '+='+ __d+'px',
-            //         bottom: '+='+ __d+'px'
-            //     }, _duration);
-            // });
-
-            main.click(function(){
-                if ($(this).hasClass('spreaded')) {
-                    $(this).removeClass('spreaded');
-                    $(this).css({
-                        'transform': 'rotate(0)',
-                        '-ms-transform': 'rotate(0)',
-                        '-moz-transform': 'rotate(0)',
-                        '-webkit-transform': 'rotate(0)',
-                        '-o-transform': 'rotate(0)',
-                    });
-                    sub_top.animate({bottom: '-='+_d+'px'}, _duration);
-                    sub_back.animate({right: '-='+_d+'px'}, _duration);
-                    sub_home.animate({
-                        right: '-='+ __d+'px',
-                        bottom: '-='+ __d+'px'
-                    }, _duration);
-                } else {
-                    $(this).addClass('spreaded');
-                    $(this).css({
-                        'transform': 'rotate(45deg)',
-                        '-ms-transform': 'rotate(45deg)',
-                        '-moz-transform': 'rotate(45deg)',
-                        '-webkit-transform': 'rotate(45deg)',
-                        '-o-transform': 'rotate(45deg)',
-                    });
-                    sub_top.animate({bottom: '+='+_d+'px'}, _duration);
-                    sub_back.animate({right: '+='+_d+'px'}, _duration);
-                    sub_home.animate({
-                        right: '+='+ __d+'px',
-                        bottom: '+='+ __d+'px'
-                    }, _duration);
+            var spread = function() {
+                if (main.hasClass('spreaded')) {
+                    return;
                 }
+                main.css({
+                    'transform': 'rotate(45deg)',
+                    '-ms-transform': 'rotate(45deg)',
+                    '-moz-transform': 'rotate(45deg)',
+                    '-webkit-transform': 'rotate(45deg)',
+                    '-o-transform': 'rotate(45deg)',
+                }).addClass('spreaded').addClass('animated tada');
+                sub_top.animate({bottom: '+='+_d+'px'}, _duration).addClass('animated bounceIn');
+                sub_back.animate({right: '+='+_d+'px'}, _duration).addClass('animated bounceIn');
+                sub_home.animate({
+                    right: '+='+ __d+'px',
+                    bottom: '+='+ __d+'px'
+                }, _duration).addClass('animated bounceIn');
+            };
+
+            var unspread = function(){
+                if (! main.hasClass('spreaded')) {
+                    return;
+                }
+                main.css({
+                    'transform': 'rotate(0)',
+                    '-ms-transform': 'rotate(0)',
+                    '-moz-transform': 'rotate(0)',
+                    '-webkit-transform': 'rotate(0)',
+                    '-o-transform': 'rotate(0)',
+                }).removeClass('spreaded').removeClass('animated tada');
+                sub_top.animate({bottom: '-='+_d+'px'}, _duration).removeClass('animated bounceIn');
+                sub_back.animate({right: '-='+_d+'px'}, _duration).removeClass('animated bounceIn');
+                sub_home.animate({
+                    right: '-='+ __d+'px',
+                    bottom: '-='+ __d+'px'
+                }, _duration).removeClass('animated bounceIn');
+            };
+
+            main.mouseenter(function(e){
+                e.stopImmediatePropagation();
+                spread();
             });
 
-            main.blur(function() {
-
+            $(document).click(function(e){
+                unspread();
             });
         }
     };
